@@ -110,7 +110,6 @@ public class DefaultNavigationBar<D extends DefaultNavigationBar.Builder.Default
             public DefaultNavigationBarParams(Context context, ViewGroup parent) {
                 super(context, parent);
             }
-
         }
     }
 

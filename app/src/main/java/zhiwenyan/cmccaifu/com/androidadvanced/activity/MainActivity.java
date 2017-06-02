@@ -39,6 +39,11 @@ public class MainActivity extends BaseActivity {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            startActivity(new Intent(this, JokeWakeUpService.class));
 //        }
+        fixDexBug();
+       // startActivity();
+    }
+
+    private void fixDexBug() {
 
     }
 

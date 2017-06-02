@@ -30,6 +30,11 @@
         <service
             android:name=".service.JokeWakeUpService"
             android:process=":jokewakeupservice"/>
+
+        <activity
+            android:name=".fragment.BottomNavigationActivity"
+            android:label="@string/title_activity_bottom_navigation">
+        </activity>
     </application>
 
 </manifest>
