@@ -13,11 +13,16 @@ import zhiwenyan.cmccaifu.com.androidadvanced.BaseApplication;
 import zhiwenyan.cmccaifu.com.androidadvanced.R;
 import zhiwenyan.cmccaifu.com.androidadvanced.base.BaseActivity;
 import zhiwenyan.cmccaifu.com.androidadvanced.exception.ExceptionCrashHandler;
+import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpCallBack;
 import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpUtils;
+import zhiwenyan.cmccaifu.com.androidadvanced.mondel.DiscoverListResult;
 import zhiwenyan.cmccaifu.com.androidadvanced.navigationbar.DefaultNavigationBar;
 import zhiwenyan.cmccaifu.com.androidadvanced.service.MessageService;
 
 public class MainActivity extends BaseActivity {
+    private String url1 = "http://is.snssdk.com/2/essay/discovery/v3/?&device_platform=android&device_type=Redmi+Note+3&iid=6152551759&" +
+            "manifest_version_code=570&longitude=113.000366&latitude=28.171377&update_version_code=5701&aid=7&channel=360";
+    private String url = "http://is.snssdk.com/2/essay/discovery/v3/?";
 
     @Override
     protected int getLayoutId() {
@@ -31,16 +36,23 @@ public class MainActivity extends BaseActivity {
         // 获取上次的崩溃信息
         File crashFile = ExceptionCrashHandler.getInstance().getCrashFile();
         // 上传到服务器，后面再说.......
-
-
-//        HttpUtils httpUtils=new HttpUtils();
-//        httpUtils.exchangeEngine(new OkhttpEngine());
-        HttpUtils.with(this).url("").addParam("", "").get().exchangeEngine(null);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            startActivity(new Intent(this, JokeWakeUpService.class));
 //        }
-        fixDexBug();
-       // startActivity();
+
+
+        HttpUtils.with(this).url(url).addParam("iid", "6152551759")
+                .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
+            @Override
+            public void onSuccess(DiscoverListResult result) {
+                Log.i("TAG", "onSuccess: " + result.getData().getCategories().getName());
+            }
+
+            @Override
+            public void error(Exception e) {
+            }
+        });
+
     }
 
     private void fixDexBug() {

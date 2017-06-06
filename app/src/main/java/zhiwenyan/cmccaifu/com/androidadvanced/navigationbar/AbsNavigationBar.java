@@ -23,7 +23,9 @@ public class AbsNavigationBar<P extends AbsNavigationBar.Builder.AbsNavigationBa
 
         if (mParams.mViewGroup == null) {
             //获取Activity的根布局
-            ViewGroup activityRoot = (ViewGroup) ((Activity) mParams.mContext).findViewById(android.R.id.content);
+            ViewGroup activityRoot = (ViewGroup) ((Activity) mParams.mContext)
+                    .getWindow().getDecorView();
+            //.findViewById(android.R.id.content);
             mParams.mViewGroup = (ViewGroup) activityRoot.getChildAt(0);
         }
         //创建View

@@ -17,6 +17,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+//        HttpUtils.init(new OkHttpEngine());
         ExceptionCrashHandler.getInstance().init(this);
 
         // Ali热修复
