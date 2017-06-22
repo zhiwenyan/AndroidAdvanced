@@ -117,11 +117,10 @@ public class HttpUtils {
         mIHttpEngine.post(url, params, callBack);
     }
 
-    //
+    //将一个泛型转化为实体类
     public static Class<?> analysisClazzInfo(Object object) {
         Type genType = object.getClass().getGenericSuperclass();
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
         return (Class<?>) params[0];
-
     }
 }

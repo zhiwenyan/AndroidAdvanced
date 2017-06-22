@@ -21,6 +21,9 @@ import zhiwenyan.cmccaifu.com.androidadvanced.base.BaseActivity;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.DaoSupportFactory;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.IDaoSupport;
 import zhiwenyan.cmccaifu.com.androidadvanced.exception.ExceptionCrashHandler;
+import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpCallBack;
+import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpUtils;
+import zhiwenyan.cmccaifu.com.androidadvanced.mondel.DiscoverListResult;
 import zhiwenyan.cmccaifu.com.androidadvanced.mondel.Person;
 import zhiwenyan.cmccaifu.com.androidadvanced.navigationbar.DefaultNavigationBar;
 
@@ -55,17 +58,17 @@ public class MainActivity extends BaseActivity {
 //        }
 //
 //
-//        HttpUtils.with(this).url(url).addParam("iid", "6152551759")
-//                .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
-//            @Override
-//            public void onSuccess(DiscoverListResult result) {
-//                Log.i("TAG", "onSuccess: " + result.getData().getCategories().getName());
-//            }
-//
-//            @Override
-//            public void error(Exception e) {
-//            }
-//        });
+        HttpUtils.with(this).url(url).addParam("iid", "6152551759")
+                .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
+            @Override
+            public void onSuccess(DiscoverListResult result) {
+                Log.i("TAG", "onSuccess: " + result.getData().getCategories().getName());
+            }
+
+            @Override
+            public void error(Exception e) {
+            }
+        });
 
     }
 

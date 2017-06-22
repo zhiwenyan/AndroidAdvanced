@@ -9,15 +9,14 @@ import java.util.List;
  */
 
 public interface IDaoSupport<T> {
+
     void init(SQLiteDatabase sqLiteDatabase, Class<T> clazz);
 
     long insert(T t);
 
     void insert(List<T> datas);
-
     //查询所有
     List<T> query();
-
     //按照语句查询
 
 }
