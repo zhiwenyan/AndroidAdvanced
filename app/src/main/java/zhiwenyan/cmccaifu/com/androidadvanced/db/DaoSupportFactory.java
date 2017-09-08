@@ -11,7 +11,7 @@ import java.io.File;
 
 public class DaoSupportFactory {
 
-    private SQLiteDatabase mSQLiteDatabase;
+    private SQLiteDatabase    mSQLiteDatabase;
 
     //持有外部数据库的引用  判断是否有内存卡，6.0需要动态申请权限；
     private DaoSupportFactory() {

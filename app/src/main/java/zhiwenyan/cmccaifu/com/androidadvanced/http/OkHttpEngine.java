@@ -23,7 +23,6 @@ public class OkHttpEngine implements IHttpEngine {
     private static OkHttpClient mOkHttpClient = new OkHttpClient();
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
     @Override
     public void get(String url, Map<String, Object> params, final EngineCallBack callBack) {
         final Request request = new Request.Builder()
