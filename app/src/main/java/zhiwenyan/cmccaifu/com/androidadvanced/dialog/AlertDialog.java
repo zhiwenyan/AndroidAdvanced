@@ -4,7 +4,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import zhiwenyan.cmccaifu.com.androidadvanced.R;
 
@@ -20,6 +22,30 @@ public class AlertDialog extends Dialog {
     public AlertDialog(@NonNull Context context, @StyleRes int themeResId) {
         super(context, themeResId);
         mAlert = new AlertController(this, getWindow());
+    }
+
+    /**
+     * 设置文本
+     *
+     * @param viewId
+     * @param text
+     */
+    public void setText(int viewId, CharSequence text) {
+        mAlert.setText(viewId, text);
+    }
+
+    /**
+     * 设置点击事件
+     *
+     * @param viewId
+     * @param listener
+     */
+    public void setOnClick(int viewId, View.OnClickListener listener) {
+        mAlert.setOnClick(viewId, listener);
+    }
+
+    public <T extends View> T getView(int viewId) {
+        return mAlert.getView(viewId);
     }
 
     /**
@@ -72,6 +98,54 @@ public class AlertDialog extends Dialog {
         public Builder setOnClickListener(int viewId, View.OnClickListener listener) {
             P.mClickArray.put(viewId, listener);
             return this;
+        }
+
+        public Builder fullWith() {
+            P.mWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+            return this;
+        }
+
+        public Builder fromBottom(boolean isAnimation) {
+            if (isAnimation) {
+                P.mAnimation = R.style.dialog_from_bottom_anim;
+            }
+            P.mGravity = Gravity.BOTTOM;
+            return this;
+        }
+
+        /**
+         * 设置宽高
+         *
+         * @param width
+         * @param height
+         * @return
+         */
+        public Builder setWidthAndHeight(int width, int height) {
+            P.mWidth = width;
+            P.mHeight = height;
+            return this;
+        }
+
+        /**
+         * 添加默认动画
+         *
+         * @return
+         */
+        public Builder setDefaultAnimation() {
+            P.mAnimation = R.style.dialog_scale_anim;
+            return this;
+        }
+
+        /**
+         * 设置动画
+         *
+         * @param styleAnim
+         * @return
+         */
+        public Builder addAnimation(int styleAnim) {
+            P.mAnimation = styleAnim;
+            return this;
+
         }
 
 

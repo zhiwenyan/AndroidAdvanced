@@ -5,6 +5,8 @@ import android.content.pm.PackageManager;
 
 import com.alipay.euler.andfix.patch.PatchManager;
 
+import zhiwenyan.cmccaifu.com.androidadvanced.exception.ExceptionCrashHandler;
+
 /**
  * Created by zhiwenyan on 5/23/17.
  */
@@ -16,7 +18,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 //        HttpUtils.init(new OkHttpEngine());
-        //ExceptionCrashHandler.getInstance().init(this);
+        ExceptionCrashHandler.getInstance().init(this);
 
         // Ali热修复
         try {

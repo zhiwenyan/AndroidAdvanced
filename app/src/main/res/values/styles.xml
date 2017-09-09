@@ -26,6 +26,15 @@
         <!--<item name="android:windowNoTitle">true</item>-->
         <!--&lt;!&ndash;背景透明&ndash;&gt;-->
         <!--<item name="android:backgroundDimEnabled">true</item>-->
+    </style>
 
+    <style name="dialog_from_bottom_anim">
+        <item name="android:windowEnterAnimation">@anim/from_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/from_bottom_exit</item>
+    </style>
+
+    <style name="dialog_scale_anim">
+        <item name="android:windowEnterAnimation">@anim/dialog_scale_enter</item>
+        <item name="android:windowExitAnimation">@anim/from_bottom_exit</item>
     </style>
 </resources>

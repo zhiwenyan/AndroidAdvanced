@@ -1,6 +1,7 @@
 package zhiwenyan.cmccaifu.com.androidadvanced.activity;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import zhiwenyan.cmccaifu.com.androidadvanced.R;
@@ -18,16 +19,20 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_layout)
-                .setText(R.id.labelShare, "分享")
-                .setOnClickListener(R.id.send, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, "微博分享", Toast.LENGTH_SHORT).show();
-                    }
-                }).show();
+                .setText(R.id.labelShare, "分享").fromBottom(true).show();
+        final EditText editText = dialog.getView(R.id.edit);
 
+        dialog.setOnClick(R.id.send, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,
+                        editText.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        //弹出软件盘的问题
 
 //        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
 //                != PackageManager.PERMISSION_GRANTED) {

@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 
 /**
  * Created by zhiwenyan on 5/23/17.
@@ -15,6 +17,7 @@ import android.view.Window;
 class AlertController {
     private AlertDialog mAlertDialog;
     private Window mWindow;
+    private DialogViewHelper mDialogViewHelper;
 
     public AlertController(AlertDialog alertDialog, Window window) {
         this.mAlertDialog = alertDialog;
@@ -27,6 +30,22 @@ class AlertController {
 
     public Window getWindow() {
         return mWindow;
+    }
+
+    public void setText(int viewId, CharSequence text) {
+        mDialogViewHelper.setText(viewId, text);
+    }
+
+    public void setOnClick(int viewId, View.OnClickListener listener) {
+        mDialogViewHelper.setOnClick(viewId, listener);
+    }
+
+    public <T extends View> T getView(int viewId) {
+        return mDialogViewHelper.getView(viewId);
+    }
+
+    public void setDialogViewHelper(DialogViewHelper dialogViewHelper) {
+        mDialogViewHelper = dialogViewHelper;
     }
 
     /**
@@ -43,6 +62,10 @@ class AlertController {
         public int mViewLayoutResId;
         public SparseArray<CharSequence> mTextArray = new SparseArray<>();
         public SparseArray<View.OnClickListener> mClickArray = new SparseArray<>();
+        public int mWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        public int mGravity = 0;
+        public int mAnimation = 0;
+        public int mHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         public AlertParams(Context context, int themeId) {
             this.mContext = context;
@@ -71,15 +94,26 @@ class AlertController {
             }
             alert.getWindow().setContentView(mViewLayoutResId);
 
+            alert.setDialogViewHelper(viewHelper);
+
             for (int i = 0; i < mTextArray.size(); i++) {
-                viewHelper.setText(mTextArray.keyAt(i), mTextArray.valueAt(i));
+                alert.setText(mTextArray.keyAt(i), mTextArray.valueAt(i));
             }
             for (int i = 0; i < mClickArray.size(); i++) {
-                viewHelper.setOnClick(mClickArray.keyAt(i), mClickArray.valueAt(i));
-
+                alert.setOnClick(mClickArray.keyAt(i), mClickArray.valueAt(i));
             }
+            Window window = alert.getWindow();
+            window.setGravity(mGravity);
+
+            if (mAnimation != 0) {
+                window.setWindowAnimations(mAnimation);
+            }
+
+            WindowManager.LayoutParams params = window.getAttributes();
+            params.width = mWidth;
+            params.height = mHeight;
+            window.setAttributes(params);
 
         }
     }
-
 }

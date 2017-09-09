@@ -30,7 +30,12 @@ public class DialogViewHelper {
         mContentView = contentView;
     }
 
-
+    /**
+     * 设置文本
+     *
+     * @param viewId
+     * @param text
+     */
     public void setText(int viewId, CharSequence text) {
         //每次都去viewById,减少findViewById的次数
         TextView tv = getView(viewId);
@@ -39,6 +44,12 @@ public class DialogViewHelper {
         }
     }
 
+    /**
+     * 设置点击事件
+     *
+     * @param viewId
+     * @param listener
+     */
     public void setOnClick(int viewId, View.OnClickListener listener) {
         View view = getView(viewId);
         if (view != null) {
@@ -47,7 +58,7 @@ public class DialogViewHelper {
         }
     }
 
-    private <T extends View> T getView(int viewId) {
+    public <T extends View> T getView(int viewId) {
         WeakReference<View> viewWeakReference = mViews.get(viewId);
         View view = null;
         if (viewWeakReference != null) {
