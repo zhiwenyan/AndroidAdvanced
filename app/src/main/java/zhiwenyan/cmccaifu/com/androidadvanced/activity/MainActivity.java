@@ -22,7 +22,7 @@ public class MainActivity extends BaseActivity {
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_layout)
-                .setText(R.id.labelShare, "分享").fromBottom(true).show();
+                .setText(R.id.labelShare, "分享").fromBottom(true).fullWith().show();
         final EditText editText = dialog.getView(R.id.edit);
 
         dialog.setOnClick(R.id.send, new View.OnClickListener() {

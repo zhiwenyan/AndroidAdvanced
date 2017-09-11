@@ -54,7 +54,6 @@ public class DialogViewHelper {
         View view = getView(viewId);
         if (view != null) {
             view.setOnClickListener(listener);
-
         }
     }
 
