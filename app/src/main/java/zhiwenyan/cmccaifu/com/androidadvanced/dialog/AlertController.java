@@ -2,6 +2,7 @@ package zhiwenyan.cmccaifu.com.androidadvanced.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,9 +98,11 @@ class AlertController {
             alert.setDialogViewHelper(viewHelper);
 
             for (int i = 0; i < mTextArray.size(); i++) {
+                Log.i("setText", "Key=" + mTextArray.keyAt(i) + "," + mTextArray.valueAt(i));
                 alert.setText(mTextArray.keyAt(i), mTextArray.valueAt(i));
             }
             for (int i = 0; i < mClickArray.size(); i++) {
+                Log.i("setOnClick", "Key=" + mTextArray.keyAt(i) + "," + mTextArray.valueAt(i));
                 alert.setOnClick(mClickArray.keyAt(i), mClickArray.valueAt(i));
             }
             Window window = alert.getWindow();

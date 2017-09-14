@@ -1,12 +1,27 @@
 package zhiwenyan.cmccaifu.com.androidadvanced.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import zhiwenyan.cmccaifu.com.androidadvanced.R;
 import zhiwenyan.cmccaifu.com.androidadvanced.base.BaseActivity;
+import zhiwenyan.cmccaifu.com.androidadvanced.db.DaoSupportFactory;
+import zhiwenyan.cmccaifu.com.androidadvanced.db.IDaoSupport;
 import zhiwenyan.cmccaifu.com.androidadvanced.dialog.AlertDialog;
+import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpCallBack;
+import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpUtils;
+import zhiwenyan.cmccaifu.com.androidadvanced.mondel.DiscoverListResult;
+import zhiwenyan.cmccaifu.com.androidadvanced.mondel.Person;
 import zhiwenyan.cmccaifu.com.androidadvanced.navigationbar.DefaultNavigationBar;
 
 public class MainActivity extends BaseActivity {
@@ -19,7 +34,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
-
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_layout)
                 .setText(R.id.labelShare, "分享").fromBottom(true).fullWith().show();
@@ -34,14 +48,14 @@ public class MainActivity extends BaseActivity {
         });
         //弹出软件盘的问题
 
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                    0x1);
-//        } else {
-//            initDao();
-//        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    0x1);
+        } else {
+            initDao();
+        }
 
 
         // startService(new Intent(this, MessageService.class));
@@ -54,17 +68,17 @@ public class MainActivity extends BaseActivity {
 //        }
 //
 //
-//        HttpUtils.with(this).url(url).addParam("iid", "6152551759")
-//                .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
-//            @Override
-//            public void onSuccess(DiscoverListResult result) {
-//                Log.i("TAG", "onSuccess: " + result.getData().getCategories().getName());
-//            }
-//
-//            @Override
-//            public void error(Exception e) {
-//            }
-//        });
+        HttpUtils.with(this).url(url).addParam("iid", "6152551759")
+                .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
+            @Override
+            public void onSuccess(DiscoverListResult result) {
+                Log.i("TAG", "onSuccess: " + result.getData().getCategories().getName());
+            }
+
+            @Override
+            public void error(Exception e) {
+            }
+        });
 
     }
 
@@ -73,24 +87,25 @@ public class MainActivity extends BaseActivity {
     }
 
     //
-//    private void initDao() {
-//        //
-//        //面向接口编程
-//        IDaoSupport<Person> dao = DaoSupportFactory.getInstance().getDao(Person.class);
-//        //ds.insert(new Person("steven", 23));
-//        List<Person> persons = new ArrayList<>();
-//        for (int i = 0; i < 1000; i++) {
-//            persons.add(new Person("steven", 23 + i));
-//        }
-//        long startTime = System.currentTimeMillis();
-//        dao.insert(persons);
-//        long endTime = System.currentTimeMillis();
-//        System.out.println("花费了:" + (endTime - startTime));
-//        //不开启事务花费了5141ms
-//        //开启事务花费了65ms
-//        //开始事务并缓存方法花费了55ms
-//    }
-//
+    private void initDao() {
+        //
+        //面向接口编程
+        IDaoSupport<Person> dao = DaoSupportFactory.getInstance().getDao(Person.class);
+        //ds.insert(new Person("steven", 23));
+        List<Person> persons = new ArrayList<>();
+        for (int i = 0; i < 1000; i++) {
+            persons.add(new Person("steven", 23 + i));
+        }
+        long startTime = System.currentTimeMillis();
+        dao.insert(persons);
+        long endTime = System.currentTimeMillis();
+        System.out.println("花费了:" + (endTime - startTime));
+        //不开启事务花费了5141ms
+        //开启事务花费了65ms
+        //开始事务并缓存方法花费了55ms
+    }
+
+    //
     @Override
     protected void initTitle() {
         new DefaultNavigationBar.Builder(this)
@@ -108,7 +123,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView() {
     }
-//
+
+    //
 //    @OnClick({R.id.test, R.id.ali_fix})
 //    public void onClick(View view) {
 //        switch (view.getId()) {
@@ -131,17 +147,18 @@ public class MainActivity extends BaseActivity {
 //        }
 //    }
 //
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (requestCode == 0x1) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                initDao();
-//            } else {
-//                // Permission Denied
-//                Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
-//            }
-//        }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 0x1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                initDao();
+            } else {
+                // Permission Denied
+                Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
 
+    }
 
 }
