@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -60,7 +59,6 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
         // 2.写入文件
         String crashFileName = saveInfoToSD(ex);
 
-        Log.e("ExceptionCrashHandler", "fileName --> " + crashFileName);
 
         // 3. 缓存崩溃日志文件
         cacheCrashFile(crashFileName);
@@ -91,7 +89,7 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * 保存获取的 软件信息，设备信息和出错信息保存在SDcard中
+     * 保存获取的软件信息，设备信息和出错信息保存在SDcard中
      *
      * @param ex
      * @return
@@ -215,9 +213,8 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
      * 递归删除目录下的所有文件及子目录下所有文件
      *
      * @param dir 将要删除的文件目录
-     * @return boolean Returns "true" if all deletions were successful. If a
-     * deletion fails, the method stops attempting to delete and returns
-     * "false".
+     *
+     *
      */
     private boolean deleteDir(File dir) {
         if (dir.isDirectory()) {
