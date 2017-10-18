@@ -213,8 +213,6 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
      * 递归删除目录下的所有文件及子目录下所有文件
      *
      * @param dir 将要删除的文件目录
-     *
-     *
      */
     private boolean deleteDir(File dir) {
         if (dir.isDirectory()) {

@@ -2,14 +2,23 @@ package zhiwenyan.cmccaifu.com.androidadvanced.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +35,8 @@ import zhiwenyan.cmccaifu.com.androidadvanced.navigationbar.DefaultNavigationBar
 
 public class MainActivity extends BaseActivity {
     private String url = "http://is.snssdk.com/2/essay/discovery/v3/?";
+    private Button mSkinBtn;
+    private ImageView mSkinImg;
 
     @Override
     protected int getLayoutId() {
@@ -54,9 +65,13 @@ public class MainActivity extends BaseActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     0x1);
         } else {
-            initDao();
+            // initDao();
         }
+       // View layoutView = View.inflate(this, R.layout.activity_main, null);
+        //LayoutInflater主要用来inflater的layout的布局
+      //  LayoutInflater.from(this).inflate(R.layout.activity_main, null);
 
+     //   LayoutInflater.from(this).inflate(R.layout.activity_main, null, false);
 
         // startService(new Intent(this, MessageService.class));
         // startActivity(new Intent(this, GuardService.class));
@@ -122,6 +137,39 @@ public class MainActivity extends BaseActivity {
     //
     @Override
     protected void initView() {
+        mSkinBtn = (Button) findViewById(R.id.skinBtn);
+        mSkinImg = (ImageView) findViewById(R.id.img);
+        mSkinBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Resources superResources = getResources();
+                try {
+                    //创建AssertManager
+                    AssetManager assetManager = AssetManager.class.newInstance();
+                    Method method = AssetManager.class.getDeclaredMethod("addAssetPath", String.class);
+                    //如果是私有的
+                    //method.setAccessible(true);
+                    //反射执行方法
+                    method.invoke(assetManager, Environment.getExternalStorageDirectory().getAbsolutePath()
+                            + File.separator + "red.skin");
+                    Resources resources = new Resources(assetManager,
+                            superResources.getDisplayMetrics(), superResources.getConfiguration());
+                    int drawableId = resources.getIdentifier("fengjingxiaotu", "mipmap", "com.fumi.zhiwenyan.skinplugin");
+                    Drawable drawable = resources.getDrawable(drawableId);
+                    mSkinImg.setImageDrawable(drawable);
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        });
     }
 
     //
@@ -152,7 +200,7 @@ public class MainActivity extends BaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 0x1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                initDao();
+                //   initDao();
             } else {
                 // Permission Denied
                 Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();

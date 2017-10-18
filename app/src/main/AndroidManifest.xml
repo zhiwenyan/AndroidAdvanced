@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-e
+    e
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -15,16 +15,8 @@ e
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.MainActivity">
 
-
-        <activity
-            android:name=".activity.MainActivity"
-            android:theme="@style/windowNoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
         <service android:name=".service.MessageService">
@@ -39,6 +31,13 @@ e
         <activity
             android:name=".fragment.BottomNavigationActivity"
             android:label="@string/title_activity_bottom_navigation">
+        </activity>
+        <activity android:name=".activity.SkinActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 
