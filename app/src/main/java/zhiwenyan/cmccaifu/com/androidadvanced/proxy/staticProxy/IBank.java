@@ -1,4 +1,4 @@
-package zhiwenyan.cmccaifu.com.androidadvanced.proxy;
+package zhiwenyan.cmccaifu.com.androidadvanced.proxy.staticProxy;
 
 /**
  * Created by zhiwenyan on 5/30/17.
