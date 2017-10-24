@@ -34,4 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:src="@mipmap/yuanjihuasy"/>
+
+
+    <Button
+        android:id="@+id/nameBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取用户名"/>
 </LinearLayout>

@@ -1,11 +1,16 @@
 package zhiwenyan.cmccaifu.com.androidadvanced.activity;
 
 import android.Manifest;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -23,12 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zhiwenyan.cmccaifu.com.androidadvanced.R;
+import zhiwenyan.cmccaifu.com.androidadvanced.UserAidl;
 import zhiwenyan.cmccaifu.com.androidadvanced.base.BaseActivity;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.DaoSupportFactory;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.IDaoSupport;
 import zhiwenyan.cmccaifu.com.androidadvanced.dialog.AlertDialog;
 import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpCallBack;
 import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpUtils;
+import zhiwenyan.cmccaifu.com.androidadvanced.ipc.MessageService;
 import zhiwenyan.cmccaifu.com.androidadvanced.mondel.DiscoverListResult;
 import zhiwenyan.cmccaifu.com.androidadvanced.mondel.Person;
 import zhiwenyan.cmccaifu.com.androidadvanced.navigationbar.DefaultNavigationBar;
@@ -37,6 +44,9 @@ public class MainActivity extends BaseActivity {
     private String url = "http://is.snssdk.com/2/essay/discovery/v3/?";
     private Button mSkinBtn;
     private ImageView mSkinImg;
+    //客户端一定要获取Aidl的实例
+    private UserAidl mUserAidl;
+    private Button mUserNameBtn;
 
     @Override
     protected int getLayoutId() {
@@ -45,11 +55,12 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initData() {
+
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_layout)
                 .setText(R.id.labelShare, "分享").fromBottom(true).fullWith().show();
         final EditText editText = dialog.getView(R.id.edit);
-
+        mUserNameBtn = (Button) findViewById(R.id.nameBtn);
         dialog.setOnClick(R.id.send, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,11 +78,11 @@ public class MainActivity extends BaseActivity {
         } else {
             // initDao();
         }
-       // View layoutView = View.inflate(this, R.layout.activity_main, null);
+        // View layoutView = View.inflate(this, R.layout.activity_main, null);
         //LayoutInflater主要用来inflater的layout的布局
-      //  LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+        //  LayoutInflater.from(this).inflate(R.layout.activity_main, null);
 
-     //   LayoutInflater.from(this).inflate(R.layout.activity_main, null, false);
+        //   LayoutInflater.from(this).inflate(R.layout.activity_main, null, false);
 
         // startService(new Intent(this, MessageService.class));
         // startActivity(new Intent(this, GuardService.class));
@@ -95,11 +106,46 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+
+        startService(new Intent(this, MessageService.class));
+
+        //隐士意图
+        Intent intent = new Intent(this, MessageService.class);
+        bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
+
     }
 
     private void fixDexBug() {
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mUserNameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Log.i("TAG", "onClick: " + mUserAidl.getUserName());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mUserAidl = UserAidl.Stub.asInterface(service);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
 
     //
     private void initDao() {
