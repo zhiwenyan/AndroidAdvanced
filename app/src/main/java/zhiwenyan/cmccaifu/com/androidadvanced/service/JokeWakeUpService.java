@@ -10,7 +10,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import java.util.List;
 
@@ -34,7 +33,6 @@ public class JokeWakeUpService extends JobService {
 
     @Override
     public boolean onStartJob(JobParameters params) {
-        Log.e("TAG", "onStartJob");
         // boolean isGuardAlive = isServiceWork(this,GuardService.class.getName());
         boolean isMessageAlive = isServiceWork(this, MessageService.class.getName());
         if (!isMessageAlive) {

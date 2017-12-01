@@ -20,7 +20,6 @@ public class AbsNavigationBar<P extends AbsNavigationBar.Builder.AbsNavigationBa
     }
 
     private void createAndBindView() {
-
         if (mParams.mViewGroup == null) {
             //获取Activity的根布局
             ViewGroup activityRoot = (ViewGroup) ((Activity) mParams.mContext)
@@ -49,7 +48,7 @@ public class AbsNavigationBar<P extends AbsNavigationBar.Builder.AbsNavigationBa
     public void applyView() {
 
     }
-
+    //Builder : 抽象类， 规范产品的组建，一般是由子类实现具体的组件过程；
     public abstract static class Builder {
         Context mContext;
         AbsNavigationBarParams p;

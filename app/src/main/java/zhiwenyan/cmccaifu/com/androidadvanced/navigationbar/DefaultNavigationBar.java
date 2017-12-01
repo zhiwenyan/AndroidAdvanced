@@ -60,7 +60,7 @@ public class DefaultNavigationBar<D extends DefaultNavigationBar.Builder.Default
     public <T extends View> T findByViewId(int viewId) {
         return (T) navigationView.findViewById(viewId);
     }
-
+    //ConcreteBuilder : 具体的构建器；
     public static class Builder extends AbsNavigationBar.Builder {
         public DefaultNavigationBarParams p;
 

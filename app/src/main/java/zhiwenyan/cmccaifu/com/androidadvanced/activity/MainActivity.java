@@ -56,14 +56,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_layout)
-                .setText(R.id.labelShare, "分享").fromBottom(true).fullWith().show();
+                .setText(R.id.labelShare, "分享")
+                //.fromBottom(true)
+                .fullWith()
+                .show();
         final EditText editText = dialog.getView(R.id.edit);
         mUserNameBtn = (Button) findViewById(R.id.nameBtn);
+        System.out.println("dialog===="+dialog);
         dialog.setOnClick(R.id.send, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("TAG", "onClick: "+dialog.toString());
                 Toast.makeText(MainActivity.this,
                         editText.getText().toString(), Toast.LENGTH_SHORT).show();
             }
@@ -109,7 +114,6 @@ public class MainActivity extends BaseActivity {
 
         startService(new Intent(this, MessageService.class));
 
-        //隐士意图
         Intent intent = new Intent(this, MessageService.class);
         bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
 
@@ -132,6 +136,9 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+        startService(new Intent(this, zhiwenyan.cmccaifu.com.androidadvanced.service.MessageService.class));
+        Intent intent = new Intent(this, zhiwenyan.cmccaifu.com.androidadvanced.service.MessageService.class);
+        bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
 
     }
 
@@ -139,6 +146,11 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mUserAidl = UserAidl.Stub.asInterface(service);
+            try {
+                mUserAidl.getUserName();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override

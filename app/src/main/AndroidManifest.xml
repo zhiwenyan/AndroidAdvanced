@@ -37,15 +37,18 @@
             android:label="@string/title_activity_bottom_navigation">
         </activity>
         <activity android:name=".activity.SkinActivity">
-
         </activity>
 
         <service android:name=".ipc.MessageService">
             <intent-filter>
                 <action android:name="com.fumi.ipc"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
+
+        <activity android:name=".DL.DLActivity">
+        </activity>
     </application>
 
 </manifest>

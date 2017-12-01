@@ -1,5 +1,6 @@
 package zhiwenyan.cmccaifu.com.androidadvanced.fragment;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -44,6 +45,7 @@ public class FragmentManagerHelper {
     public void switchFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
+        @SuppressLint("RestrictedApi")
         List<Fragment> childFragments = mFragmentManager.getFragments();
         //隐藏所有的Fragment
         for (Fragment childFragment : childFragments) {
@@ -57,5 +59,4 @@ public class FragmentManagerHelper {
         }
         fragmentTransaction.commit();
     }
-
 }
