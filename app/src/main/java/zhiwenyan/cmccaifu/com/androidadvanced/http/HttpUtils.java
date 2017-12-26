@@ -28,6 +28,7 @@ public class HttpUtils {
 
     //post的参数
     private HashMap<String, Object> mParams;
+    private boolean mCache;
 
     private HttpUtils(Context context) {
         this.mContext = context;
@@ -75,6 +76,11 @@ public class HttpUtils {
         return this;
     }
 
+    public HttpUtils cache(boolean cache) {
+        this.mCache = cache;
+        return this;
+    }
+
     /**
      * 添加回调
      *
@@ -88,10 +94,10 @@ public class HttpUtils {
         }
         //判断执行方法
         if (mType == GET_TYPE) {
-            get(mUrl, mParams, callback);
+            get(mCache, mUrl, mParams, callback);
         }
         if (mType == POST_TYPE) {
-            post(mUrl, mParams, callback);
+            post(mCache, mUrl, mParams, callback);
         }
     }
 
@@ -109,12 +115,12 @@ public class HttpUtils {
 
     }
 
-    private void get(String url, Map<String, Object> params, EngineCallBack callBack) {
-        mIHttpEngine.get(url, params, callBack);
+    private void get(boolean cache, String url, Map<String, Object> params, EngineCallBack callBack) {
+        mIHttpEngine.get(cache, url, params, callBack);
     }
 
-    private void post(String url, Map<String, Object> params, EngineCallBack callBack) {
-        mIHttpEngine.post(url, params, callBack);
+    private void post(boolean cache, String url, Map<String, Object> params, EngineCallBack callBack) {
+        mIHttpEngine.post(cache, url, params, callBack);
     }
 
     //将一个泛型转化为实体类

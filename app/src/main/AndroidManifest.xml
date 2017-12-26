@@ -49,6 +49,12 @@
 
         <activity android:name=".DL.DLActivity">
         </activity>
+        <activity android:name=".selectImage.SelectImageActivity">
+
+        </activity>
+        <activity android:name=".selectImage.TestImageActivity">
+
+        </activity>
     </application>
 
 </manifest>

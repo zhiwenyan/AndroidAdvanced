@@ -13,7 +13,7 @@ public interface EngineCallBack {
     void onPreExecute(Context context, Map<String, Object> params);
 
     //成功的方法
-    void success(String result);
+   public void success(String result);
 
     void error(Exception e);
 

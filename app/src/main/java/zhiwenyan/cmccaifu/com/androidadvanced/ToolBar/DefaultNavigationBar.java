@@ -10,8 +10,8 @@ import zhiwenyan.cmccaifu.com.androidadvanced.R;
  * Created by zhiwenyan on 10/09/2017.
  */
 
-public class DefaultNavigationBar<D extends DefaultNavigationBar.Builder.DefaultNavigationBarParams> extends AbsNavigationBar<DefaultNavigationBar.
-        Builder.DefaultNavigationBarParams> {
+public class DefaultNavigationBar<D extends DefaultNavigationBar.Builder.DefaultNavigationBarParams>
+        extends AbsNavigationBar<DefaultNavigationBar.Builder.DefaultNavigationBarParams> {
     public DefaultNavigationBar(D params) {
         super(params);
     }

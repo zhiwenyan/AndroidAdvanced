@@ -1,8 +1,10 @@
 package zhiwenyan.cmccaifu.com.androidadvanced.http;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -12,6 +14,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import zhiwenyan.cmccaifu.com.androidadvanced.db.DaoSupportFactory;
+import zhiwenyan.cmccaifu.com.androidadvanced.db.IDaoSupport;
 
 /**
  * Created by zhiwenyan on 5/24/17.
@@ -23,8 +27,21 @@ public class OkHttpEngine implements IHttpEngine {
     private static OkHttpClient mOkHttpClient = new OkHttpClient();
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
     @Override
-    public void get(String url, Map<String, Object> params, final EngineCallBack callBack) {
+    public void get(boolean cache, String url, Map<String, Object> params, final EngineCallBack callBack) {
+        if (cache) {
+            //key 是url，json是后台返回的json数据
+            IDaoSupport<CacheData> daoSupport = DaoSupportFactory.getInstance().getDao(CacheData.class);
+            List<CacheData> cacheDatas = daoSupport.querySupport().selection("mUrlKey=?").selection(url).query();
+            if (cacheDatas.size() != 0) {
+                CacheData cacheData = cacheDatas.get(0);
+                String resultJson = cacheData.getResultJson();
+                if (!TextUtils.isEmpty(resultJson)) {
+                    callBack.success(resultJson);
+                }
+            }
+        }
         final Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -47,7 +64,7 @@ public class OkHttpEngine implements IHttpEngine {
     }
 
     @Override
-    public void post(String url, Map<String, Object> params, EngineCallBack callBack) {
+    public void post(boolean cache, String url, Map<String, Object> params, EngineCallBack callBack) {
         String json = "{'winCondition':'HIGH_SCORE',"
                 + "'name':'Bowling',"
                 + "'round':4,"

@@ -64,11 +64,10 @@ public class MainActivity extends BaseActivity {
                 .show();
         final EditText editText = dialog.getView(R.id.edit);
         mUserNameBtn = (Button) findViewById(R.id.nameBtn);
-        System.out.println("dialog===="+dialog);
         dialog.setOnClick(R.id.send, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("TAG", "onClick: "+dialog.toString());
+                Log.i("TAG", "onClick: " + dialog.toString());
                 Toast.makeText(MainActivity.this,
                         editText.getText().toString(), Toast.LENGTH_SHORT).show();
             }
@@ -100,6 +99,7 @@ public class MainActivity extends BaseActivity {
 //
 //
         HttpUtils.with(this).url(url).addParam("iid", "6152551759")
+                .cache(true)
                 .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
             @Override
             public void onSuccess(DiscoverListResult result) {
@@ -258,7 +258,7 @@ public class MainActivity extends BaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 0x1) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //   initDao();
+                //  initDao();
             } else {
                 // Permission Denied
                 Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
