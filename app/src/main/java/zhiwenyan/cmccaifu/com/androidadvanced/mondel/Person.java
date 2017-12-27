@@ -4,7 +4,7 @@ package zhiwenyan.cmccaifu.com.androidadvanced.mondel;
  * Created by yanzhiwen on 2017/9/12.
  */
 
-public class Person {
+public class Person  {
     private String name;
     private int age;
 

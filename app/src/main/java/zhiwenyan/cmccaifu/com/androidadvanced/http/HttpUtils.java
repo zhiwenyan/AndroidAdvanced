@@ -101,6 +101,32 @@ public class HttpUtils {
         }
     }
 
+    /**
+     * 拼接参数
+     */
+    public static String jointParams(String url, Map<String, Object> params) {
+        if (params == null || params.size() <= 0) {
+            return url;
+        }
+
+        StringBuffer stringBuffer = new StringBuffer(url);
+        if (!url.contains("?")) {
+            stringBuffer.append("?");
+        } else {
+            if (!url.endsWith("?")) {
+                stringBuffer.append("&");
+            }
+        }
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            stringBuffer.append(entry.getKey() + "=" + entry.getValue() + "&");
+        }
+
+        stringBuffer.deleteCharAt(stringBuffer.length() - 1);
+
+        return stringBuffer.toString();
+    }
+
     public void execute() {
         execute(null);
     }

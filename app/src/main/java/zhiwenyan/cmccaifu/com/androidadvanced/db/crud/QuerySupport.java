@@ -12,6 +12,8 @@ import java.util.List;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.DaoUtil;
 
 /**
+ * Created by Darren on 2017/3/7.
+ * Email: 240336124@qq.com
  * Description: 专门用来查询的支持类
  */
 public class QuerySupport<T> {
@@ -100,6 +102,7 @@ public class QuerySupport<T> {
 
     /**
      * 通过Cursor封装成查找对象
+     *
      * @return 对象集合列表
      */
     private List<T> cursorToList(Cursor cursor) {

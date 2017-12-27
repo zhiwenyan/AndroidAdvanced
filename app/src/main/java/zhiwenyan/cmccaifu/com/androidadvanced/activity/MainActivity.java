@@ -1,6 +1,7 @@
 package zhiwenyan.cmccaifu.com.androidadvanced.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -80,7 +81,7 @@ public class MainActivity extends BaseActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     0x1);
         } else {
-            // initDao();
+           initDao();
         }
         // View layoutView = View.inflate(this, R.layout.activity_main, null);
         //LayoutInflater主要用来inflater的layout的布局
@@ -103,7 +104,7 @@ public class MainActivity extends BaseActivity {
                 .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
             @Override
             public void onSuccess(DiscoverListResult result) {
-                Log.i("TAG", "onSuccess: " + result.getData().getCategories().getName());
+                System.out.println("-------"+result);
             }
 
             @Override
@@ -204,6 +205,7 @@ public class MainActivity extends BaseActivity {
                 try {
                     //创建AssertManager
                     AssetManager assetManager = AssetManager.class.newInstance();
+                    @SuppressLint("PrivateApi")
                     Method method = AssetManager.class.getDeclaredMethod("addAssetPath", String.class);
                     //如果是私有的
                     //method.setAccessible(true);

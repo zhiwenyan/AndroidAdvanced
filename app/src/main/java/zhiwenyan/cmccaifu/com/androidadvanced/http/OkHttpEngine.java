@@ -4,7 +4,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -14,8 +13,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import zhiwenyan.cmccaifu.com.androidadvanced.db.DaoSupportFactory;
-import zhiwenyan.cmccaifu.com.androidadvanced.db.IDaoSupport;
+import zhiwenyan.cmccaifu.com.androidadvanced.db.CacheDataUtil;
 
 /**
  * Created by zhiwenyan on 5/24/17.
@@ -29,19 +27,10 @@ public class OkHttpEngine implements IHttpEngine {
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     @Override
-    public void get(boolean cache, String url, Map<String, Object> params, final EngineCallBack callBack) {
-        if (cache) {
-            //key 是url，json是后台返回的json数据
-            IDaoSupport<CacheData> daoSupport = DaoSupportFactory.getInstance().getDao(CacheData.class);
-            List<CacheData> cacheDatas = daoSupport.querySupport().selection("mUrlKey=?").selection(url).query();
-            if (cacheDatas.size() != 0) {
-                CacheData cacheData = cacheDatas.get(0);
-                String resultJson = cacheData.getResultJson();
-                if (!TextUtils.isEmpty(resultJson)) {
-                    callBack.success(resultJson);
-                }
-            }
-        }
+    public void get(final boolean cache, final String url, final Map<String, Object> params, final EngineCallBack callBack) {
+
+        final String finalUrl = HttpUtils.jointParams(url, params);
+
         final Request request = new Request.Builder()
                 .url(url)
                 .build();
@@ -56,9 +45,26 @@ public class OkHttpEngine implements IHttpEngine {
             public void onResponse(Call call, Response response) throws IOException {
                 //这2个方法回调不在主线程方法中
                 //执行成功之后，转化为可操作的对象
-                String result = response.body().string();
-                Log.i("TAG", "onResponse: " + result);
-                callBack.success(result);
+                String resultJson = response.body().string();
+                Log.i("TAG", "onResponse: " + resultJson);
+                if (cache) {
+                    //key 是url，json是后台返回的json数据
+
+                    String cacheResultJson = CacheDataUtil.getCacheResultJson(finalUrl);
+                    Log.e("cacheResultJson", "onResponse: " + cacheResultJson);
+                    if (!TextUtils.isEmpty(cacheResultJson)) {
+                        if (resultJson.equals(cacheResultJson)) {
+                            Log.e("TAG", "onResponse: 数据缓存与请求到的数据一致");
+                            return;
+                        }
+                        callBack.success(cacheResultJson);
+                    }
+
+                }
+                callBack.success(resultJson);
+                if (cache) {
+                    CacheDataUtil.cacheData(finalUrl, resultJson);
+                }
             }
         });
     }

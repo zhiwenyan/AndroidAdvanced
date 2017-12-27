@@ -41,15 +41,13 @@ public class DaoSupport<T> implements IDaoSupport<T> {
                 + "flag boolean)";*/
 
         StringBuffer sb = new StringBuffer();
-
         sb.append("create table if not exists ")
                 .append(DaoUtil.getTableName(mClazz))
                 .append("(id integer primary key autoincrement,");
-
         Field[] fields = mClazz.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);// 设置权限
-            String name = field.getName();
+            String name = field.getName(); //成员属性名
             String type = field.getType().getSimpleName();// int String boolean
             //  type需要进行转换 int --> integer, String text;
             sb.append(name).append(DaoUtil.getColumnType(type)).append(",");
@@ -110,7 +108,6 @@ public class DaoSupport<T> implements IDaoSupport<T> {
     private ContentValues contentValuesByObj(T obj) {
         // 第三方的 使用比对一下 了解一下源码
         ContentValues values = new ContentValues();
-
         // 封装values
         Field[] fields = mClazz.getDeclaredFields();
 
@@ -122,7 +119,7 @@ public class DaoSupport<T> implements IDaoSupport<T> {
                 // 获取value
                 Object value = field.get(obj);
                 // put 第二个参数是类型  把它转换
-
+                Log.e(TAG, "contentValuesByObj: " + key + "," + value);
                 mPutMethodArgs[0] = key;
                 mPutMethodArgs[1] = value;
 
@@ -130,11 +127,11 @@ public class DaoSupport<T> implements IDaoSupport<T> {
                 // 源码里面  activity实例 反射  View创建反射
                 // 第三方以及是源码给我们提供的是最好的学习教材   插件换肤
                 // 感谢google提供的源码，我们明天再见
-
                 String filedTypeName = field.getType().getName();
                 // 还是使用反射  获取方法  put  缓存方法
                 Method putMethod = mPutMethods.get(filedTypeName);
                 if (putMethod == null) {
+                    //方法名，，传入参数名
                     putMethod = ContentValues.class.getDeclaredMethod("put",
                             String.class, value.getClass());
                     mPutMethods.put(filedTypeName, putMethod);
