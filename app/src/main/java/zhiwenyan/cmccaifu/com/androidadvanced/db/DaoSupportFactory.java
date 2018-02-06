@@ -15,7 +15,8 @@ public class DaoSupportFactory {
 
     //持有外部数据库的引用  判断是否有内存卡，6.0需要动态申请权限；
     private DaoSupportFactory() {
-        File dbRoot = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "nhdz" + File.separator
+        File dbRoot = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + File.separator + "nhdz" + File.separator
                 + "database");
         if (!dbRoot.exists()) {
             dbRoot.mkdirs();

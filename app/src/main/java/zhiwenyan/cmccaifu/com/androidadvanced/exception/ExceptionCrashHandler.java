@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
     private Context mContext;
-    private static ExceptionCrashHandler mInstance = null;
+    private static volatile ExceptionCrashHandler mInstance = null;
     private Thread.UncaughtExceptionHandler mDefaultExceptionHandler;
 
     public static ExceptionCrashHandler getInstance() {
