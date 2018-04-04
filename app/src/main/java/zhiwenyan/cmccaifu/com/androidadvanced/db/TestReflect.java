@@ -44,6 +44,7 @@ public class TestReflect {
         Class<?> clazz = User.class;
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+
             String name = field.getName();
             //String value = field.get(User.class).toString();
 

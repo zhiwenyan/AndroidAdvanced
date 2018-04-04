@@ -1,5 +1,6 @@
 package zhiwenyan.cmccaifu.com.androidadvanced.http;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -36,7 +37,7 @@ public class OkHttpEngine implements IHttpEngine {
                 .build();
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 callBack.error(e);
                 Log.i("TAG", "onFailure: " + e.getMessage());
             }

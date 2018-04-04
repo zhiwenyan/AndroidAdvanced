@@ -1,6 +1,5 @@
 package zhiwenyan.cmccaifu.com.androidadvanced.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -13,12 +12,10 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -28,12 +25,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.OnClick;
+import zhiwenyan.cmccaifu.com.androidadvanced.BaseApplication;
 import zhiwenyan.cmccaifu.com.androidadvanced.R;
 import zhiwenyan.cmccaifu.com.androidadvanced.UserAidl;
-import zhiwenyan.cmccaifu.com.androidadvanced.base.BaseActivity;
+import zhiwenyan.cmccaifu.com.androidadvanced.base.BaseSkinActivity;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.DaoSupportFactory;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.IDaoSupport;
 import zhiwenyan.cmccaifu.com.androidadvanced.dialog.AlertDialog;
+import zhiwenyan.cmccaifu.com.androidadvanced.exception.ExceptionCrashHandler;
 import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpCallBack;
 import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpUtils;
 import zhiwenyan.cmccaifu.com.androidadvanced.ipc.MessageService;
@@ -41,7 +41,7 @@ import zhiwenyan.cmccaifu.com.androidadvanced.mondel.DiscoverListResult;
 import zhiwenyan.cmccaifu.com.androidadvanced.mondel.Person;
 import zhiwenyan.cmccaifu.com.androidadvanced.navigationbar.DefaultNavigationBar;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseSkinActivity {
     private String url = "http://is.snssdk.com/2/essay/discovery/v3/?";
     private Button mSkinBtn;
     private ImageView mSkinImg;
@@ -57,37 +57,50 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initData() {
 
+        File crashFile = ExceptionCrashHandler.getInstance().getCrashFile();
+        if (crashFile.exists()) {
+            //将崩溃日志上传至服务器
+
+        }
+
         final AlertDialog dialog = new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_layout)
                 .setText(R.id.labelShare, "分享")
-                //.fromBottom(true)
+                .fromBottom(true)
                 .fullWith()
+                .setOnClickListener(R.id.send, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "send", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .show();
-        final EditText editText = dialog.getView(R.id.edit);
+//        final EditText editText = dialog.getView(R.id.edit);
+//
         mUserNameBtn = (Button) findViewById(R.id.nameBtn);
-        dialog.setOnClick(R.id.send, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("TAG", "onClick: " + dialog.toString());
-                Toast.makeText(MainActivity.this,
-                        editText.getText().toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        dialog.setOnClick(R.id.send, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.i("TAG", "onClick: " + dialog.toString());
+//                Toast.makeText(MainActivity.this,
+//                        editText.getText().toString(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
         //弹出软件盘的问题
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    0x1);
-        } else {
-           initDao();
-        }
+//
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                    0x1);
+//        } else {
+//            initDao();
+//        }
         // View layoutView = View.inflate(this, R.layout.activity_main, null);
         //LayoutInflater主要用来inflater的layout的布局
         //  LayoutInflater.from(this).inflate(R.layout.activity_main, null);
 
-        //   LayoutInflater.from(this).inflate(R.layout.activity_main, null, false);
+        LayoutInflater.from(this).inflate(R.layout.activity_main, null, false);
 
         // startService(new Intent(this, MessageService.class));
         // startActivity(new Intent(this, GuardService.class));
@@ -104,7 +117,7 @@ public class MainActivity extends BaseActivity {
                 .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
             @Override
             public void onSuccess(DiscoverListResult result) {
-                System.out.println("-------"+result);
+                System.out.println("-------" + result);
             }
 
             @Override
@@ -137,8 +150,8 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
-        startService(new Intent(this, zhiwenyan.cmccaifu.com.androidadvanced.service.MessageService.class));
-        Intent intent = new Intent(this, zhiwenyan.cmccaifu.com.androidadvanced.service.MessageService.class);
+        startService(new Intent(this, MessageService.class));
+        Intent intent = new Intent(this, MessageService.class);
         bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
 
     }
@@ -146,9 +159,11 @@ public class MainActivity extends BaseActivity {
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            //service 是服务端给我们的
             mUserAidl = UserAidl.Stub.asInterface(service);
             try {
-                mUserAidl.getUserName();
+                String userName = mUserAidl.getUserName();
+                Log.i("TAG", "onServiceConnected: " + userName);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -232,29 +247,30 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-    //
-//    @OnClick({R.id.test, R.id.ali_fix})
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.test:
+    @OnClick({R.id.test, R.id.ali_fix})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.test:
 //                Toast.makeText(this, 2 / 0 + "测试", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.ali_fix:
-//                try {
-//                    // 测试 目前暂且放在本地
-//                    String patchFileString = Environment.getExternalStorageDirectory() + "/fix.apatch";
-//                    Log.e("TAG", patchFileString);
-//                    // 修复apatch，不需要重启可立即生效
-//                    BaseApplication.mPatchManager.addPatch(patchFileString);
-//                    Toast.makeText(this, "Bug修复成功", Toast.LENGTH_LONG).show();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    Toast.makeText(this, "Bug修复失败", Toast.LENGTH_LONG).show();
-//                }
-//                break;
-//        }
-//    }
-//
+                break;
+            case R.id.ali_fix:
+                try {
+                    // 测试 目前暂且放在本地
+                    File patchFile = new File(Environment.getExternalStorageDirectory(), "fix.apatch");
+                    if (patchFile.exists()) {
+                        // 修复apatch，不需要重启可立即生效
+                        BaseApplication.mPatchManager.addPatch(patchFile.getAbsolutePath());
+                        Toast.makeText(this, "Bug修复成功", Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Bug修复失败", Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
+
+    //
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -266,7 +282,11 @@ public class MainActivity extends BaseActivity {
                 Toast.makeText(MainActivity.this, "Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

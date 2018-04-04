@@ -22,7 +22,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
         initTitle();
         initView();
-
     }
 
     protected abstract int getLayoutId();

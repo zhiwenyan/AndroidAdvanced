@@ -3,8 +3,8 @@ package zhiwenyan.cmccaifu.com.androidadvanced.navigationbar;
 /**
  * Created by zhiwenyan on 5/23/17.
  *
-         * 产品抽象类
-         */
+* 产品抽象类
+*/
 
 public interface INavigationBar {
     // 绑定布局ID

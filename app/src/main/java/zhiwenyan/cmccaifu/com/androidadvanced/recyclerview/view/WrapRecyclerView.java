@@ -71,7 +71,8 @@ public class WrapRecyclerView extends RecyclerView {
         }
 
         if (mLongClickListener != null) {
-            mWrapRecyclerAdapter.setOnLongClickListener((zhiwenyan.cmccaifu.com.androidadvanced.recyclerview.adapter.OnLongClickListener) mLongClickListener);
+            mWrapRecyclerAdapter.setOnLongClickListener((zhiwenyan.cmccaifu.com.androidadvanced.recyclerview.adapter.
+                    OnLongClickListener) mLongClickListener);
         }
     }
 

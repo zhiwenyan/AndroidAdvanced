@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by zhiwenyan on 5/23/17.
  * <p>
- * Description:收集崩溃信息
+ * Description:收集异常崩溃信息
  */
 
 public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
@@ -40,7 +40,9 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-     * @param context 用来获取应用的一些信息
+     * 初始化
+     *
+     * @param context
      */
     public void init(Context context) {
         this.mContext = context;
@@ -49,18 +51,10 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
 
     }
 
-
     @Override
     public void uncaughtException(Thread t, Throwable ex) {
-        // 1. 获取信息
-        // 1.1 崩溃信息
-        // 1.2 手机信息
-        // 1.3 版本信息
-        // 2.写入文件
         String crashFileName = saveInfoToSD(ex);
-
-
-        // 3. 缓存崩溃日志文件
+        //缓存崩溃日志文件
         cacheCrashFile(crashFileName);
         // 系统默认处理
         mDefaultExceptionHandler.uncaughtException(t, ex);
@@ -124,7 +118,8 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
             try {
                 fileName = dir.toString()
                         + File.separator
-                        + getAssignTime("yyyy_MM_dd_HH_mm") + ".txt";
+                        + getAssignTime("yyyy_MM_dd_HH_mm_ss")
+                        + ".txt";
                 FileOutputStream fos = new FileOutputStream(fileName);
                 fos.write(sb.toString().getBytes());
                 fos.flush();
@@ -138,7 +133,7 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
 
     /**
      * 返回当前日期根据格式
-     **/
+     */
     private String getAssignTime(String dateFormatStr) {
         DateFormat dataFormat = new SimpleDateFormat(dateFormatStr);
         long currentTime = System.currentTimeMillis();
@@ -166,17 +161,17 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
         map.put("MODEL", "" + Build.MODEL);
         map.put("SDK_INT", "" + Build.VERSION.SDK_INT);
         map.put("PRODUCT", "" + Build.PRODUCT);
-        map.put("MOBLE_INFO", getMobileInfo());
+        map.put("MOBILE", getMobileInfo());
         return map;
     }
 
 
     /**
-     * Cell phone information
+     * 利用反射获取手机的信息
      *
      * @return
      */
-    public static String getMobileInfo() {
+    private static String getMobileInfo() {
         StringBuffer sb = new StringBuffer();
         try {
             Field[] fields = Build.class.getDeclaredFields();
@@ -184,7 +179,7 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
                 field.setAccessible(true);
                 String name = field.getName();
                 String value = field.get(null).toString();
-                sb.append(name + "=" + value);
+                sb.append(name).append("=").append(value);
                 sb.append("\n");
             }
         } catch (Exception e) {
@@ -228,6 +223,4 @@ public class ExceptionCrashHandler implements Thread.UncaughtExceptionHandler {
         // 目录此时为空，可以删除
         return true;
     }
-
-
 }

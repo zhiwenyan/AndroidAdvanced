@@ -102,7 +102,7 @@ class AlertController {
                 alert.setText(mTextArray.keyAt(i), mTextArray.valueAt(i));
             }
             for (int i = 0; i < mClickArray.size(); i++) {
-                Log.i("setOnClick", "Key=" + mTextArray.keyAt(i) + "," + mTextArray.valueAt(i));
+                Log.i("setOnClick", "Key=" + mClickArray.keyAt(i) + "," + mClickArray.valueAt(i));
                 alert.setOnClick(mClickArray.keyAt(i), mClickArray.valueAt(i));
             }
             Window window = alert.getWindow();
