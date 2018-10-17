@@ -78,10 +78,8 @@ public class SelectImageActivity extends AppCompatActivity implements View.OnCli
         if (mResultList == null) {
             mResultList = new ArrayList<>();
         }
-
         // 2.初始化本地图片数据
         initImageList();
-
         // 3.改变显示
         exchangeViewShow();
     }

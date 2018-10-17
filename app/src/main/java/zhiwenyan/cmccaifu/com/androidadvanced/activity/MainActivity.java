@@ -29,19 +29,16 @@ import butterknife.OnClick;
 import zhiwenyan.cmccaifu.com.androidadvanced.BaseApplication;
 import zhiwenyan.cmccaifu.com.androidadvanced.R;
 import zhiwenyan.cmccaifu.com.androidadvanced.UserAidl;
-import zhiwenyan.cmccaifu.com.androidadvanced.base.BaseSkinActivity;
+import zhiwenyan.cmccaifu.com.androidadvanced.base.BaseActivity;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.DaoSupportFactory;
 import zhiwenyan.cmccaifu.com.androidadvanced.db.IDaoSupport;
 import zhiwenyan.cmccaifu.com.androidadvanced.dialog.AlertDialog;
 import zhiwenyan.cmccaifu.com.androidadvanced.exception.ExceptionCrashHandler;
-import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpCallBack;
-import zhiwenyan.cmccaifu.com.androidadvanced.http.HttpUtils;
 import zhiwenyan.cmccaifu.com.androidadvanced.ipc.MessageService;
-import zhiwenyan.cmccaifu.com.androidadvanced.mondel.DiscoverListResult;
 import zhiwenyan.cmccaifu.com.androidadvanced.mondel.Person;
 import zhiwenyan.cmccaifu.com.androidadvanced.navigationbar.DefaultNavigationBar;
 
-public class MainActivity extends BaseSkinActivity {
+public class MainActivity extends BaseActivity {
     private String url = "http://is.snssdk.com/2/essay/discovery/v3/?";
     private Button mSkinBtn;
     private ImageView mSkinImg;
@@ -56,7 +53,6 @@ public class MainActivity extends BaseSkinActivity {
 
     @Override
     protected void initData() {
-
         File crashFile = ExceptionCrashHandler.getInstance().getCrashFile();
         if (crashFile.exists()) {
             //将崩溃日志上传至服务器
@@ -112,18 +108,18 @@ public class MainActivity extends BaseSkinActivity {
 //        }
 //
 //
-        HttpUtils.with(this).url(url).addParam("iid", "6152551759")
-                .cache(true)
-                .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
-            @Override
-            public void onSuccess(DiscoverListResult result) {
-                System.out.println("-------" + result);
-            }
-
-            @Override
-            public void error(Exception e) {
-            }
-        });
+//        HttpUtils.with(this).url(url).addParam("iid", "6152551759")
+//                .cache(true)
+//                .addParam("aid", "7").execute(new HttpCallBack<DiscoverListResult>() {
+//            @Override
+//            public void onSuccess(DiscoverListResult result) {
+//                System.out.println("-------" + result);
+//            }
+//
+//            @Override
+//            public void error(Exception e) {
+//            }
+//        });
 
 
         startService(new Intent(this, MessageService.class));
@@ -163,7 +159,7 @@ public class MainActivity extends BaseSkinActivity {
             mUserAidl = UserAidl.Stub.asInterface(service);
             try {
                 String userName = mUserAidl.getUserName();
-                Log.i("TAG", "onServiceConnected: " + userName);
+                Log.i("MainActivity", "onServiceConnected: " + userName);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

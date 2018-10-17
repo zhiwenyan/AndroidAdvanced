@@ -32,6 +32,15 @@ public class BaseApplication extends Application {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+//        HookStartActivityUtil hookStartActivityUtil=new HookStartActivityUtil();
+//        try {
+//            hookStartActivityUtil.hookStartActivity();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
+
+
 
 }

@@ -79,7 +79,6 @@ public class DefaultNavigationBar<D extends DefaultNavigationBar.Builder.Default
             DefaultNavigationBar defaultNavigationBar = new DefaultNavigationBar(p);
             return defaultNavigationBar;
         }
-
         //设置所有效果
         public DefaultNavigationBar.Builder setTitle(String title) {
             p.mTitle = title;

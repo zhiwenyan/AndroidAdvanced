@@ -14,8 +14,7 @@ import zhiwenyan.cmccaifu.com.androidadvanced.utils.NetworkUtils;
 /**
  * Description:
  * Data：2/6/2018-2:06 PM
- *
- * @author: yanzhiwen
+ * author: yanzhiwen
  */
 public class ViewUtils {
 
