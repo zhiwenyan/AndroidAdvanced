@@ -37,6 +37,7 @@ import zhiwenyan.cmccaifu.com.androidadvanced.exception.ExceptionCrashHandler;
 import zhiwenyan.cmccaifu.com.androidadvanced.ipc.MessageService;
 import zhiwenyan.cmccaifu.com.androidadvanced.mondel.Person;
 import zhiwenyan.cmccaifu.com.androidadvanced.navigationbar.DefaultNavigationBar;
+import zhiwenyan.cmccaifu.com.androidadvanced.service.UpdateVersionService;
 
 public class MainActivity extends BaseActivity {
     private String url = "http://is.snssdk.com/2/essay/discovery/v3/?";
@@ -59,7 +60,7 @@ public class MainActivity extends BaseActivity {
 
         }
 
-        final AlertDialog dialog = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setContentView(R.layout.dialog_layout)
                 .setText(R.id.labelShare, "分享")
                 .fromBottom(true)
@@ -73,7 +74,7 @@ public class MainActivity extends BaseActivity {
                 .show();
 //        final EditText editText = dialog.getView(R.id.edit);
 //
-        mUserNameBtn = (Button) findViewById(R.id.nameBtn);
+        mUserNameBtn = ( Button ) findViewById(R.id.nameBtn);
 //        dialog.setOnClick(R.id.send, new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -127,7 +128,29 @@ public class MainActivity extends BaseActivity {
         Intent intent = new Intent(this, MessageService.class);
         bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
 
+
+//        Intent intent1 = new Intent(this, UpdateVersionService.class);
+////        intent.putExtra("apkUrl", "");
+////        this.startService(intent1);
+////        this.bindService(intent1, conn, Context.BIND_AUTO_CREATE);
+
     }
+
+    private UpdateVersionService.DownloadBinder binder;
+
+    ServiceConnection conn = new ServiceConnection() {
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            binder = ( UpdateVersionService.DownloadBinder ) service;
+            // 开始下载
+            binder.start();
+        }
+    };
 
     private void fixDexBug() {
 
@@ -207,8 +230,8 @@ public class MainActivity extends BaseActivity {
     //
     @Override
     protected void initView() {
-        mSkinBtn = (Button) findViewById(R.id.skinBtn);
-        mSkinImg = (ImageView) findViewById(R.id.img);
+        mSkinBtn = ( Button ) findViewById(R.id.skinBtn);
+        mSkinImg = ( ImageView ) findViewById(R.id.img);
         mSkinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

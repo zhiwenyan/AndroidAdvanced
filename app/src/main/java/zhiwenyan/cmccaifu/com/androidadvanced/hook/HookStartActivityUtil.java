@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * Description:
+ * Description:插件化
  * Data：8/15/2018-9:50 AM
  *
  * @author yanzhiwen
@@ -29,6 +29,7 @@ public class HookStartActivityUtil {
         Object iamInstance = mInstanceFiled.get(gDefault);
         //开始动态代理，用代理对象替换掉真实的ActivityManager，瞒天过海
         Class<?> iamClass = Class.forName("android.app.IActivityManager");
+
         Proxy.newProxyInstance(HookStartActivityUtil.this.getClass().getClassLoader(), new Class[]{iamClass}, new StartActivityInvocationHandler(iamInstance));
         mInstanceFiled.set(gDefault, mInstanceFiled);
     }

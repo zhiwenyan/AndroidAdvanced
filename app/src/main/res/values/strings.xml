@@ -14,4 +14,8 @@
     <string name="media_choose_preview">预览</string>
 
     <string name="media_chooser_hint">支持选取最短4s最长10min</string>
+    <string name="download_title">app</string>
+    <string name="download_finish_title">下载</string>
+    <string name="download_finish_text">下载中....</string>
+    <string name="download_alter">下载异常...</string>
 </resources>

@@ -42,5 +42,6 @@ public class BaseApplication extends Application {
     }
 
 
-
+    public void setDownload(boolean b) {
+    }
 }

@@ -46,7 +46,10 @@ public class Client {
             System.out.println("做些流程");
             System.out.println("方法执行：" + method.getName());
             //man 方法的执行对象
+            System.out.println("man="+man);
             Object object = method.invoke(man, args);
+            System.out.println("object="+object);
+
             System.out.println("完毕");
             return object;
         }

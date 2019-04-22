@@ -28,7 +28,7 @@ public class JobWakeUpService extends JobService {
         //开启一个轮询
         JobInfo.Builder builder = new JobInfo.Builder(JOB_ID, new ComponentName(this, JobWakeUpService.class));
         builder.setPeriodic(2000);
-        JobScheduler jobScheduler = (JobScheduler) getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        JobScheduler jobScheduler = ( JobScheduler ) getSystemService(Context.JOB_SCHEDULER_SERVICE);
         jobScheduler.schedule(builder.build());
         return START_STICKY;
     }
@@ -58,7 +58,7 @@ public class JobWakeUpService extends JobService {
      */
     public boolean isServiceWork(Context mContext, String serviceName) {
         boolean isWork = false;
-        ActivityManager activityManager = (ActivityManager) mContext
+        ActivityManager activityManager = ( ActivityManager ) mContext
                 .getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningServiceInfo> runningServiceInfoList = activityManager.getRunningServices(100);
         if (runningServiceInfoList.size() <= 0) {

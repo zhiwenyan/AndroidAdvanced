@@ -3,6 +3,7 @@ package zhiwenyan.cmccaifu.com.androidadvanced.ipc;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
@@ -25,7 +26,12 @@ public class IPCActivity extends BaseActivity {
 
     @Override
     protected void initTitle() {
+        Intent intent=new Intent();
+        intent.putExtra("aa",1);
+        Bundle bundle=new Bundle();
 
+        intent.putExtras(bundle);
+        getIntent().getExtras();
     }
 
     @Override
@@ -51,7 +57,6 @@ public class IPCActivity extends BaseActivity {
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-
         }
 
         @Override
